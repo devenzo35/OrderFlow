@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.env
+.env.*
+.venv/
+venv/
+ENV/
+env/
+*.sqlite3
+instance/
+*.db
+
+# VS Code
+.vscode/
+.history/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Test/coverage
+htmlcov/
+.coverage
+.tox/
+.pytest_cache/
+.cache/
+nosetests.xml
+coverage.xml
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# PDF/CSV exports
+exports/
+*.pdf
+*.csv
+
+# Others
+*.egg-info/
+dist/
+build/
