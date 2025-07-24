@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Mapped, MappedColumn as Column, DeclarativeBase
 from sqlalchemy import ForeignKey, Enum
-from db.database import Base
+from app.db.database import Base
 import datetime, enum
+from sqlalchemy import String
 
 
 class Base(DeclarativeBase):
@@ -12,11 +13,12 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = Column(primary_key=True)
-    username: Mapped[str] = Column(string=30, unique=True)
-    fullname: Mapped[str] = Column(string=50)
-    email: Mapped[str] = Column(string=50)
-    hashed_password: Mapped[str] = Column(string=50)
-    role: Mapped[str] = Column(string=50)
+    username: Mapped[str] = Column(String(30), unique=True)
+    fullname: Mapped[str] = Column(String(50))
+    email: Mapped[str] = Column(String(50))
+    age: Mapped[str] = Column(nullable=False)
+    hashed_password: Mapped[str] = Column(String(50))
+    role: Mapped[str] = Column(String(30), default="user")
     is_active: Mapped[bool] = Column(default=True)
     created_at: Mapped[datetime.datetime] = Column(
         default=datetime.datetime.now(datetime.timezone.utc)
@@ -30,36 +32,36 @@ class MovementsType(enum.Enum):
 
 
 class Movements(Base):
+    __tablename__ = "movements"
+
     id: Mapped[int] = Column(primary_key=True)
     user_id: Mapped[int] = Column(ForeignKey("users.id"))
-    type: Mapped[MovementsType] = Column(
-        Enum(MovementsType), nullable=False
-    )  # (income, expense, investment)
+    type: Mapped[MovementsType] = Column(Enum(MovementsType), nullable=False)
     amount: Mapped[float] = Column(nullable=False)
     date: Mapped[datetime.date] = Column(nullable=False)
     category_id: Mapped[int] = Column(ForeignKey("categories.id"))
-    description: Mapped[str] = Column(string=255, nullable=True)
+    description: Mapped[str] = Column(String(255), nullable=True)
     created_at: Mapped[datetime.datetime] = Column(
         default=datetime.datetime.now(datetime.timezone.utc)
     )
 
 
-class categories(Base):
+class Categories(Base):
+    __tablename__ = "categories"
+
     id: Mapped[int] = Column(primary_key=True)
-    name: Mapped[str] = Column(string=50, nullable=False)
-    type: Mapped[MovementsType] = Column(
-        Enum(MovementsType), nullable=False
-    )  # (income, expense, investment)
+    name: Mapped[str] = Column(String(50), nullable=False)
+    type: Mapped[MovementsType] = Column(Enum(MovementsType), nullable=False)
     user_id: Mapped[int] = Column(ForeignKey("users.id"))
 
 
-class reports(Base):
+class Reports(Base):
+    __tablename__ = "reports"
+
     id: Mapped[int] = Column(primary_key=True)
     user_id: Mapped[int] = Column(ForeignKey("users.id"))
-    report_type: Mapped[str] = Column(string=50)  # (income, expense, investment)
+    report_type: Mapped[str] = Column(String(50))
     created_at: Mapped[datetime.datetime] = Column(
         default=datetime.datetime.now(datetime.timezone.utc)
     )
-    file_path: Mapped[str] = Column(
-        string=255, nullable=False
-    )  # Path to the report file
+    file_path: Mapped[str] = Column(String(255), nullable=False)

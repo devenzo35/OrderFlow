@@ -4,3 +4,4 @@ pytest
 httpx
 dotenv
 PyJWT
+passlib[bcrypt]

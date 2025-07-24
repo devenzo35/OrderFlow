@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from app.db.database import SessionLocal
-from ..dependencies import get_token_header
+
+# from ..dependencies import get_token_header
 from app.db.database import Base, engine
 
 Base.metadata.create_all(bind=engine)

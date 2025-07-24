@@ -10,29 +10,27 @@ class User(BaseModel):
 
 
 class UserCreate(User):
-    hashed_password: str
-    role: str
-    is_active: bool = True
-    created_at: datetime
+    password: str
 
 
-class UserOut(User):
+class UserPublic(User):
     id: int
+    is_active: bool
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserInDB(User):
     id: int
     hashed_password: str
     role: str
-    is_active: bool
+    is_active: bool = True
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserLogin(BaseModel):
@@ -40,4 +38,4 @@ class UserLogin(BaseModel):
     password: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
