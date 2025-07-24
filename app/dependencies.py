@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import Header, HTTPException, status
+from fastapi import Header, HTTPException, status, Depends
 
 
 async def get_token_header(x_token: Annotated[str, Depends(Header())]):
