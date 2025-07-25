@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 
 class User(BaseModel):
     username: str
     fullname: str
-    email: str
+    email: EmailStr
     age: int
 
 

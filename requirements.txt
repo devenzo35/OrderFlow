@@ -5,3 +5,4 @@ httpx
 dotenv
 PyJWT
 passlib[bcrypt]
+alembic

@@ -8,9 +8,13 @@ from app.db.database import SessionLocal
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 import os
+from app.db.database import engine
+from app.db.database import Base
+
 
 load_dotenv()
 
+Base.metadata.create_all(bind=engine)
 
 ALGORITH = "HS256"
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -43,8 +47,8 @@ async def user_register(user: UserCreate, db: Session = Depends(get_db)):
     user_without_password = user.model_dump(exclude={"password"})
     user_to_create = User(**user_without_password)
     user_to_create.hashed_password = hash_password(user.password)
-    user_db = db.add(user_to_create)
+    db.add(user_to_create)
 
     db.commit()
-    db.refresh(user_db)
+    db.refresh(user_to_create)
     return user_to_create

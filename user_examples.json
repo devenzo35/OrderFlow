@@ -1,0 +1,37 @@
+[
+    {
+        "username": "enzo_dev",
+        "fullname": "Enzo Fernández",
+        "email": "enzo@example.com",
+        "age": 25,
+        "password": "supersecure123"
+    },
+    {
+        "username": "maria_data",
+        "fullname": "Maria Gómez",
+        "email": "maria.gomez@example.com",
+        "age": 28,
+        "password": "datastrong2024"
+    },
+    {
+        "username": "pablo_ml",
+        "fullname": "Pablo Ramírez",
+        "email": "pablo.ramirez@example.com",
+        "age": 32,
+        "password": "ml4life_!"
+    },
+    {
+        "username": "lara_web",
+        "fullname": "Lara Martínez",
+        "email": "lara@example.org",
+        "age": 30,
+        "password": "webdev#2023"
+    },
+    {
+        "username": "admin_root",
+        "fullname": "Admin Root",
+        "email": "admin@company.com",
+        "age": 40,
+        "password": "adminadmin"
+    }
+]
