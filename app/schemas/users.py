@@ -39,3 +39,8 @@ class UserLogin(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class JwtToken(BaseModel):
+    access_token: str
+    token_type: str
