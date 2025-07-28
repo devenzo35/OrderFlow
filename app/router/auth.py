@@ -4,30 +4,17 @@ from fastapi import APIRouter, Depends
 from dotenv import load_dotenv
 from app.schemas.users import UserPublic, UserCreate
 from app.models.user import User
-from app.db.database import SessionLocal
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
+from ..dependencies import get_db
 import os
-from app.db.database import engine
-from app.db.database import Base
-
 
 load_dotenv()
-
-Base.metadata.create_all(bind=engine)
 
 ALGORITH = "HS256"
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 router = APIRouter(
