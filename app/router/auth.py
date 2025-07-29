@@ -7,17 +7,19 @@ from sqlalchemy.exc import IntegrityError
 
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+import jwt
+from jwt.exceptions import InvalidTokenError
 
 from ..dependencies import get_db
 from ..services.validators import userValidator, JWTValidator
 
 from dotenv import load_dotenv
 import os
-from datetime import timedelta, timezone, datetime 
+from datetime import timedelta, timezone, datetime
 
 load_dotenv()
 
-ALGORITH = "HS256"
+ALGORITHM = "HS256"
 SECRET_KEY = os.getenv("SECRET_KEY")
 TOKEN_EXPIRATION_MINUTES = 30
 
@@ -29,6 +31,12 @@ router = APIRouter(
     prefix="/auth",
     tags=["auth"],
     responses={404: {"description": "Not found"}},
+)
+
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
 )
 
 
@@ -60,9 +68,19 @@ def verify_password(password: str, hashed_password: str):
     return pwd_context.verify(password, hashed_password)
 
 
+def generate_access_token(data: dict[str, str | datetime]):
+    to_encode = data.copy()
+
+    token_expire = datetime.now(timezone.utc) + timedelta(
+        minutes=TOKEN_EXPIRATION_MINUTES
+    )
+    to_encode.update({"exp": token_expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)  # type: ignore
+
+    return encoded_jwt
 
 
-@router.post("/login", status_code=200, response_model=JwtToken)
+@router.post("/login", status_code=200)
 def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db),
@@ -80,9 +98,44 @@ def login(
             status.HTTP_400_BAD_REQUEST, detail="invalid username or password"
         )
 
-    token_expire = datetime.now(timezone.utc) + timedelta(minutes=TOKEN_EXPIRATION_MINUTES)
+    token = generate_access_token(data={"sub": user_in_db.username})
 
-    data = {"sub": form_data.username}
-    to_encode = 
+    return token
 
-    return {"access_token": "3y73hd$3dhdna9od**92u482^^u4$3%nd", "token_type": "bearer"}
+
+async def get_current_user(
+    token: Annotated[str, Depends(OAuth2)], db: Session = Depends(get_db)
+):
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])  # type:ignore
+        username: str = payload.get("sub")
+
+        if not username:
+            raise credentials_exception
+    except InvalidTokenError:
+        raise credentials_exception
+
+    user = db.query(User).filter(User.username == username).first()
+
+    if not user:
+        raise credentials_exception
+
+    return user
+
+
+async def get_current_active_user(
+    currentUser: Annotated[User, Depends(get_current_user)],
+):
+    if not currentUser.is_active:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="User is inactive, please contact with OrderFlow support service!",
+        )
+
+
+@router.get("/me", response_model=UserPublic)
+async def read_users_me(
+    current_user: Annotated[User, Depends(get_current_active_user)],
+):
+    return current_user
