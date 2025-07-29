@@ -41,6 +41,5 @@ class UserLogin(BaseModel):
         from_attributes = True
 
 
-class JwtToken(BaseModel):
-    access_token: str
-    token_type: str
+class TokenRefreshRequest(BaseModel):
+    refresh_token: str
