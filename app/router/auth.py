@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Annotated
+from typing import Annotated, Callable
 from app.schemas.users import UserPublic, UserCreate, TokenRefreshRequest
 from app.models.user import User
 from sqlalchemy.orm import Session
@@ -45,7 +45,7 @@ def verify_password(password: str, hashed_password: str):
     return pwd_context.verify(password, hashed_password)
 
 
-def generate_access_token(data: dict[str, str | int | datetime]):
+def generate_access_token(data: dict[str, str | datetime]):
     to_encode = data.copy()
 
     token_expire = datetime.now(timezone.utc) + timedelta(
@@ -57,7 +57,7 @@ def generate_access_token(data: dict[str, str | int | datetime]):
     return encoded_jwt
 
 
-def generate_refresh_token(data: dict[str, str | int | datetime]):
+def generate_refresh_token(data: dict[str, str | datetime]):
     to_encode = data.copy()
 
     print(to_encode)
@@ -105,6 +105,18 @@ async def get_current_active_user(
     return currentUser
 
 
+def role_required(required_roles: list[str]) -> Callable[[User], User]:
+    def wrapper(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role not in required_roles:
+            raise HTTPException(
+                status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to access this resource",
+            )
+        return current_user
+
+    return wrapper
+
+
 @router.post("/register", status_code=201, response_model=UserPublic)
 async def user_register(user: UserCreate, db: Session = Depends(get_db)):
 
@@ -147,12 +159,20 @@ def login(
             status.HTTP_400_BAD_REQUEST, detail="invalid username or password"
         )
 
-    token = generate_access_token(data={"sub": str(user_in_db.id), "type": "access"})
-    refresh_access_token = generate_refresh_token(data={"sub": str(user_in_db.id)})
+    access_token = generate_access_token(
+        data={
+            "sub": str(user_in_db.id),
+            "role": str(user_in_db.role.value),
+            "type": "access",
+        }
+    )
+    refresh_token = generate_refresh_token(
+        data={"sub": str(user_in_db.id), "role": str(user_in_db.role.value)}
+    )
 
     return {
-        "access_token": token,
-        "refresh_token": refresh_access_token,
+        "access_token": access_token,
+        "refresh_token": refresh_token,
         "token_type": "Bearer",
     }
 

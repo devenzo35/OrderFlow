@@ -17,6 +17,7 @@ class UserPublic(User):
     id: int
     is_active: bool
     created_at: datetime
+    role: str
 
     class Config:
         from_attributes = True

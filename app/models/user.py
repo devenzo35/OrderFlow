@@ -5,6 +5,11 @@ import datetime, enum
 from sqlalchemy import String
 
 
+class RoleEnum(str, enum.Enum):
+    admin = "admin"
+    user = "user"
+
+
 class User(Base):
     __tablename__ = "users"
 
@@ -14,7 +19,7 @@ class User(Base):
     email: Mapped[str] = Column(String(100))
     age: Mapped[str] = Column(nullable=False)
     hashed_password: Mapped[str] = Column(String(100))
-    role: Mapped[str] = Column(String(100), default="user")
+    role: Mapped[RoleEnum] = Column(Enum(RoleEnum), default="user")
     is_active: Mapped[bool] = Column(default=True)
     created_at: Mapped[datetime.datetime] = Column(
         default=datetime.datetime.now(datetime.timezone.utc)
