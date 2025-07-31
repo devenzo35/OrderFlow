@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Mapped, MappedColumn as Column
+from sqlalchemy.orm import Mapped, mapped_column as Column, relationship
 from sqlalchemy import ForeignKey, Enum
 from app.db.database import Base
 import datetime, enum
@@ -32,22 +32,7 @@ class MovementsType(enum.Enum):
     INVESTMENT = "investment"
 
 
-class Movements(Base):
-    __tablename__ = "movements"
-
-    id: Mapped[int] = Column(primary_key=True)
-    user_id: Mapped[int] = Column(ForeignKey("users.id"))
-    type: Mapped[MovementsType] = Column(Enum(MovementsType), nullable=False)
-    amount: Mapped[float] = Column(nullable=False)
-    date: Mapped[datetime.date] = Column(nullable=False)
-    category_id: Mapped[int] = Column(ForeignKey("categories.id"))
-    description: Mapped[str] = Column(String(255), nullable=True)
-    created_at: Mapped[datetime.datetime] = Column(
-        default=datetime.datetime.now(datetime.timezone.utc)
-    )
-
-
-class Categories(Base):
+class Category(Base):
     __tablename__ = "categories"
 
     id: Mapped[int] = Column(primary_key=True)
