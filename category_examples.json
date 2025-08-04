@@ -1,0 +1,54 @@
+[
+    {
+        "name": "Salary",
+        "type": "income"
+    },
+    {
+        "name": "Sales",
+        "type": "income"
+    },
+    {
+        "name": "Rent",
+        "type": "expense"
+    },
+    {
+        "name": "Food",
+        "type": "expense"
+    },
+    {
+        "name": "Transport",
+        "type": "expense"
+    },
+    {
+        "name": "Savings",
+        "type": "investment"
+    },
+    {
+        "name": "Cryptocurrency",
+        "type": "investment"
+    },
+    {
+        "name": "Utilities",
+        "type": "expense"
+    },
+    {
+        "name": "Entertainment",
+        "type": "expense"
+    },
+    {
+        "name": "Healthcare",
+        "type": "expense"
+    },
+    {
+        "name": "Education",
+        "type": "expense"
+    },
+    {
+        "name": "Insurance",
+        "type": "expense"
+    },
+    {
+        "name": "Miscellaneous",
+        "type": "expense"
+    }
+]

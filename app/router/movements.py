@@ -2,6 +2,7 @@ from fastapi import APIRouter, status, Depends, HTTPException
 from ..dependencies import get_db
 from sqlalchemy.orm import Session
 from ..models.user import User
+from ..models.category import Category
 from ..models.movements import Movement
 from ..schemas.movements import CreateMovement, MovementPublic, UpdateMovement
 from .auth import get_current_user
@@ -11,6 +12,52 @@ router = APIRouter(
     tags=["movements"],
     responses={404: {"message": status.HTTP_404_NOT_FOUND}},
 )
+
+
+@router.get("/all", response_model=list[MovementPublic])
+def get_my_movements(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+):
+    movements = db.query(Movement).filter(Movement.user_id == current_user.id).all()
+
+    if not movements:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User {current_user.username} has no movements yet",
+        )
+
+    return [movement for movement in movements]
+
+
+@router.post("/create", response_model=MovementPublic, status_code=201)
+async def create_movement(
+    movement: CreateMovement,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+
+    category_db = (
+        db.query(Category).filter(Category.name == movement.category)
+    ).first()
+
+    if not category_db:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Category does not exist or incorrect movement type: {movement.type.value}, category type : {category_db.type}",
+        )
+
+    new_movement = Movement(
+        **movement.model_dump(exclude={"type", "category"}),
+        user_id=current_user.id,
+        type=category_db.type,
+        category_id=category_db.id,
+    )
+
+    db.add(new_movement)
+    db.commit()
+    db.refresh(new_movement)
+
+    return new_movement
 
 
 @router.get("/{movement_id}", response_model=MovementPublic)
@@ -35,40 +82,6 @@ def get_movement(
     return movement
 
 
-@router.get("/all", response_model=list[MovementPublic])
-def get_my_movements(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
-):
-    movements = db.query(Movement).filter(Movement.user_id == current_user.id).all()
-
-    if not movements:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User {current_user.username} has no movements yet",
-        )
-
-    return [movement for movement in movements]
-
-
-@router.post("/create/", response_model=MovementPublic, status_code=201)
-async def create_movement(
-    movement: CreateMovement,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
-    new_movement = Movement(
-        **movement.model_dump(exclude={"type"}),
-        user_id=current_user.id,
-        type=movement.type,
-    )
-
-    db.add(new_movement)
-    db.commit()
-    db.refresh(new_movement)
-
-    return new_movement
-
-
 @router.patch("/update/{movement_id}", status_code=200)  # response_model=MovementPublic
 async def update_movement(
     movement_id: int,
@@ -76,6 +89,7 @@ async def update_movement(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+
     movement_to_update = (
         db.query(Movement)
         .filter(Movement.id == movement_id)
@@ -85,6 +99,15 @@ async def update_movement(
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Movement does not exist")
 
     movement_fields = movement_update.model_dump(exclude_unset=True)
+
+    forbidden_fields = ["created_at", "id", "user_id"]
+
+    for field in movement_fields:
+        if field in forbidden_fields:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Forbidden action",
+            )
 
     for field, value in movement_fields.items():
         setattr(movement_to_update, field, value)

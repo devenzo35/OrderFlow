@@ -8,7 +8,7 @@ class CreateMovement(BaseModel):
     amount: float
     type: MovementType
     description: str | None = None
-    category_id: int
+    category: str
     date: date
 
 

@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Mapped, mapped_column as Column, relationship
+from sqlalchemy.orm import Mapped, mapped_column as Column
 from sqlalchemy import ForeignKey, Enum
 from app.db.database import Base
 import datetime, enum
@@ -24,21 +24,6 @@ class User(Base):
     created_at: Mapped[datetime.datetime] = Column(
         default=datetime.datetime.now(datetime.timezone.utc)
     )
-
-
-class MovementsType(enum.Enum):
-    INCOME = "income"
-    EXPENSE = "expense"
-    INVESTMENT = "investment"
-
-
-class Category(Base):
-    __tablename__ = "categories"
-
-    id: Mapped[int] = Column(primary_key=True)
-    name: Mapped[str] = Column(String(100), nullable=False)
-    type: Mapped[MovementsType] = Column(Enum(MovementsType), nullable=False)
-    user_id: Mapped[int] = Column(ForeignKey("users.id"))
 
 
 class Reports(Base):

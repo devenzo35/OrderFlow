@@ -1,0 +1,282 @@
+[
+    {
+        "amount": 320000,
+        "category_id": 2,
+        "date": "2025-07-01",
+        "type": "income",
+        "description": "Sueldo mensual Acme Corp"
+    },
+    {
+        "amount": 75000,
+        "category_id": 7,
+        "date": "2025-07-04",
+        "type": "income",
+        "description": "Proyecto freelance Figma landing"
+    },
+    {
+        "amount": 120000,
+        "category_id": 2,
+        "date": "2024-12-30",
+        "type": "income",
+        "description": "Pago retroactivo sueldo"
+    },
+    {
+        "amount": 38000,
+        "category_id": 7,
+        "date": "2023-11-17",
+        "type": "income",
+        "description": "Revisión UX para e-commerce"
+    },
+    {
+        "amount": 20000,
+        "category_id": 10,
+        "date": "2024-03-20",
+        "type": "income",
+        "description": "Ahorro manual marzo"
+    },
+    {
+        "amount": 45000,
+        "category_id": 2,
+        "date": "2023-08-05",
+        "type": "income",
+        "description": "Media jornada en startup"
+    },
+    {
+        "amount": 92000,
+        "category_id": 7,
+        "date": "2024-06-15",
+        "type": "income",
+        "description": "Proyecto web para cliente USA"
+    },
+    {
+        "amount": 31000,
+        "category_id": 10,
+        "date": "2025-01-10",
+        "type": "income",
+        "description": "Aporte a fondo personal"
+    },
+    {
+        "amount": 185000,
+        "category_id": 2,
+        "date": "2023-02-01",
+        "type": "income",
+        "description": "Sueldo enero"
+    },
+    {
+        "amount": 60000,
+        "category_id": 7,
+        "date": "2025-03-22",
+        "type": "income",
+        "description": "Diseño landing page"
+    },
+    {
+        "amount": 120000,
+        "category_id": 3,
+        "date": "2025-07-05",
+        "type": "expense",
+        "description": "Alquiler departamento julio"
+    },
+    {
+        "amount": 18000,
+        "category_id": 4,
+        "date": "2025-07-03",
+        "type": "expense",
+        "description": "Supermercado Coto"
+    },
+    {
+        "amount": 3400,
+        "category_id": 5,
+        "date": "2024-04-06",
+        "type": "expense",
+        "description": "SUBE recarga"
+    },
+    {
+        "amount": 9500,
+        "category_id": 6,
+        "date": "2023-05-07",
+        "type": "expense",
+        "description": "Factura luz Edenor"
+    },
+    {
+        "amount": 9900,
+        "category_id": 6,
+        "date": "2024-09-09",
+        "type": "expense",
+        "description": "Internet y cable"
+    },
+    {
+        "amount": 2800,
+        "category_id": 5,
+        "date": "2025-06-10",
+        "type": "expense",
+        "description": "Viaje Cabify trabajo"
+    },
+    {
+        "amount": 6500,
+        "category_id": 8,
+        "date": "2023-08-11",
+        "type": "expense",
+        "description": "Cena con amigos"
+    },
+    {
+        "amount": 23000,
+        "category_id": 9,
+        "date": "2023-09-12",
+        "type": "expense",
+        "description": "Curso Data Engineering Udemy"
+    },
+    {
+        "amount": 1500,
+        "category_id": 4,
+        "date": "2025-07-13",
+        "type": "expense",
+        "description": "Panadería"
+    },
+    {
+        "amount": 2700,
+        "category_id": 4,
+        "date": "2023-11-14",
+        "type": "expense",
+        "description": "Desayuno fuera"
+    },
+    {
+        "amount": 54000,
+        "category_id": 3,
+        "date": "2024-12-01",
+        "type": "expense",
+        "description": "Alquiler diciembre"
+    },
+    {
+        "amount": 11000,
+        "category_id": 4,
+        "date": "2025-05-20",
+        "type": "expense",
+        "description": "Supermercado Jumbo"
+    },
+    {
+        "amount": 3000,
+        "category_id": 5,
+        "date": "2024-07-19",
+        "type": "expense",
+        "description": "Carga combustible"
+    },
+    {
+        "amount": 4800,
+        "category_id": 6,
+        "date": "2025-01-25",
+        "type": "expense",
+        "description": "Factura gas Metrogas"
+    },
+    {
+        "amount": 7700,
+        "category_id": 8,
+        "date": "2023-10-18",
+        "type": "expense",
+        "description": "Spotify + Netflix"
+    },
+    {
+        "amount": 400000,
+        "category_id": 1,
+        "date": "2025-07-15",
+        "type": "investment",
+        "description": "Compra 300usd SPX500"
+    },
+    {
+        "amount": 120000,
+        "category_id": 1,
+        "date": "2023-10-18",
+        "type": "investment",
+        "description": "Compra BTC 0.002"
+    },
+    {
+        "amount": 100000,
+        "category_id": 1,
+        "date": "2024-01-19",
+        "type": "investment",
+        "description": "Bonos AL30"
+    },
+    {
+        "amount": 80000,
+        "category_id": 1,
+        "date": "2025-02-20",
+        "type": "investment",
+        "description": "ETF QQQ"
+    },
+    {
+        "amount": 95000,
+        "category_id": 1,
+        "date": "2023-05-25",
+        "type": "investment",
+        "description": "CEDEAR Apple"
+    },
+    {
+        "amount": 45000,
+        "category_id": 1,
+        "date": "2025-07-28",
+        "type": "investment",
+        "description": "Plazo fijo 30 días"
+    },
+    {
+        "amount": 110000,
+        "category_id": 1,
+        "date": "2025-07-30",
+        "type": "investment",
+        "description": "ETH 0.03"
+    },
+    {
+        "amount": 65000,
+        "category_id": 1,
+        "date": "2024-06-28",
+        "type": "investment",
+        "description": "Fondos comunes de inversión"
+    },
+    {
+        "amount": 57000,
+        "category_id": 1,
+        "date": "2024-02-08",
+        "type": "investment",
+        "description": "Compra dólar MEP"
+    },
+    {
+        "amount": 88000,
+        "category_id": 1,
+        "date": "2024-10-21",
+        "type": "investment",
+        "description": "Acciones MercadoLibre"
+    },
+    {
+        "amount": 98000,
+        "category_id": 2,
+        "date": "2023-01-01",
+        "type": "income",
+        "description": "Sueldo enero"
+    },
+    {
+        "amount": 15000,
+        "category_id": 4,
+        "date": "2024-03-03",
+        "type": "expense",
+        "description": "PedidosYa fin de semana"
+    },
+    {
+        "amount": 37000,
+        "category_id": 7,
+        "date": "2024-05-05",
+        "type": "income",
+        "description": "Consultoría freelance breve"
+    },
+    {
+        "amount": 45000,
+        "category_id": 6,
+        "date": "2023-12-06",
+        "type": "expense",
+        "description": "Factura agua y electricidad"
+    },
+    {
+        "amount": 89000,
+        "category_id": 10,
+        "date": "2025-03-07",
+        "type": "income",
+        "description": "Transferencia ahorro a cuenta externa"
+    }
+]
