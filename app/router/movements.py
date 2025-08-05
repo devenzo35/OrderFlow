@@ -37,13 +37,14 @@ async def create_movement(
 ):
 
     category_db = (
-        db.query(Category).filter(Category.name == movement.category)
-    ).first()
+        (db.query(Category).filter(Category.name == movement.category))
+        .filter(Category.user_id == current_user.id)
+        .first()
+    )
 
     if not category_db:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Category does not exist or incorrect movement type: {movement.type.value}, category type : {category_db.type}",
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Category does not exist"
         )
 
     new_movement = Movement(

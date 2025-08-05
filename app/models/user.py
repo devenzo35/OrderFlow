@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column as Column
-from sqlalchemy import ForeignKey, Enum
+from sqlalchemy import Enum
 from app.db.database import Base
 import datetime, enum
 from sqlalchemy import String
@@ -24,15 +24,3 @@ class User(Base):
     created_at: Mapped[datetime.datetime] = Column(
         default=datetime.datetime.now(datetime.timezone.utc)
     )
-
-
-class Reports(Base):
-    __tablename__ = "reports"
-
-    id: Mapped[int] = Column(primary_key=True)
-    user_id: Mapped[int] = Column(ForeignKey("users.id"))
-    report_type: Mapped[str] = Column(String(100))
-    created_at: Mapped[datetime.datetime] = Column(
-        default=datetime.datetime.now(datetime.timezone.utc)
-    )
-    file_path: Mapped[str] = Column(String(255), nullable=False)

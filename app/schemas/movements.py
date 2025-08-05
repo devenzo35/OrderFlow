@@ -6,7 +6,6 @@ from ..models.movements import MovementType
 
 class CreateMovement(BaseModel):
     amount: float
-    type: MovementType
     description: str | None = None
     category: str
     date: date
