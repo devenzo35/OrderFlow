@@ -48,9 +48,8 @@ async def create_movement(
         )
 
     new_movement = Movement(
-        **movement.model_dump(exclude={"type", "category"}),
+        **movement.model_dump(exclude={"category"}),
         user_id=current_user.id,
-        type=category_db.type,
         category_id=category_db.id,
     )
 

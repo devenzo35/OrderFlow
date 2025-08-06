@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from ..models.movements import MovementType
+from ..models.category import CategoryType
 
 
 class CategoryCreate(BaseModel):
     name: str
-    type: MovementType
+    type: CategoryType

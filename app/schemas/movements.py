@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import date, datetime
-from ..models.movements import MovementType
 
 
 class CreateMovement(BaseModel):
@@ -13,7 +12,6 @@ class CreateMovement(BaseModel):
 
 class UpdateMovement(BaseModel):
     amount: Optional[float] = None
-    type: Optional[MovementType] = None
     description: Optional[str] = None
     category_id: Optional[int] = None
     movement_date: Optional[date] = None
@@ -22,7 +20,6 @@ class UpdateMovement(BaseModel):
 class MovementPublic(BaseModel):
     id: int
     amount: float
-    type: MovementType
     description: str | None = None
     category_id: int
     created_at: datetime

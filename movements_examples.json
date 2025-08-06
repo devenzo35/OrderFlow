@@ -1,282 +1,674 @@
 [
     {
-        "amount": 320000,
-        "category_id": 2,
-        "date": "2025-07-01",
-        "type": "income",
-        "description": "Sueldo mensual Acme Corp"
+        "amount": 1200.50,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2025-08-01"
     },
     {
-        "amount": 75000,
-        "category_id": 7,
-        "date": "2025-07-04",
-        "type": "income",
-        "description": "Proyecto freelance Figma landing"
+        "amount": 250.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2024-11-15"
     },
     {
-        "amount": 120000,
-        "category_id": 2,
-        "date": "2024-12-30",
-        "type": "income",
-        "description": "Pago retroactivo sueldo"
+        "amount": 80.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2023-03-04"
     },
     {
-        "amount": 38000,
-        "category_id": 7,
-        "date": "2023-11-17",
-        "type": "income",
-        "description": "Revisión UX para e-commerce"
+        "amount": 500.00,
+        "description": "Bought Bitcoin on Coinbase",
+        "category": "Cryptocurrency",
+        "date": "2025-08-02"
     },
     {
-        "amount": 20000,
-        "category_id": 10,
-        "date": "2024-03-20",
-        "type": "income",
-        "description": "Ahorro manual marzo"
+        "amount": 3200.00,
+        "description": "Freelance web development project for Acme Corp",
+        "category": "Freelance",
+        "date": "2022-07-10"
     },
     {
-        "amount": 45000,
-        "category_id": 2,
-        "date": "2023-08-05",
-        "type": "income",
-        "description": "Media jornada en startup"
+        "amount": 120.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2023-12-02"
     },
     {
-        "amount": 92000,
-        "category_id": 7,
-        "date": "2024-06-15",
-        "type": "income",
-        "description": "Proyecto web para cliente USA"
+        "amount": 200.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2024-01-06"
     },
     {
-        "amount": 31000,
-        "category_id": 10,
-        "date": "2025-01-10",
-        "type": "income",
-        "description": "Aporte a fondo personal"
+        "amount": 60.00,
+        "description": "Dinner at Italian restaurant",
+        "category": "Food",
+        "date": "2025-02-07"
     },
     {
-        "amount": 185000,
-        "category_id": 2,
-        "date": "2023-02-01",
-        "type": "income",
-        "description": "Sueldo enero"
+        "amount": 300.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2023-08-01"
     },
     {
-        "amount": 60000,
-        "category_id": 7,
-        "date": "2025-03-22",
-        "type": "income",
-        "description": "Diseño landing page"
+        "amount": 45.00,
+        "description": "Internet bill for August",
+        "category": "Utilities",
+        "date": "2022-08-03"
     },
     {
-        "amount": 120000,
-        "category_id": 3,
-        "date": "2025-07-05",
-        "type": "expense",
-        "description": "Alquiler departamento julio"
+        "amount": 1200.50,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2025-08-01"
     },
     {
-        "amount": 18000,
-        "category_id": 4,
-        "date": "2025-07-03",
-        "type": "expense",
-        "description": "Supermercado Coto"
+        "amount": 250.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2025-08-02"
     },
     {
-        "amount": 3400,
-        "category_id": 5,
-        "date": "2024-04-06",
-        "type": "expense",
-        "description": "SUBE recarga"
+        "amount": 80.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2025-08-03"
     },
     {
-        "amount": 9500,
-        "category_id": 6,
-        "date": "2023-05-07",
-        "type": "expense",
-        "description": "Factura luz Edenor"
+        "amount": 500.00,
+        "description": "Bought Bitcoin on Coinbase",
+        "category": "Cryptocurrency",
+        "date": "2025-08-04"
     },
     {
-        "amount": 9900,
-        "category_id": 6,
-        "date": "2024-09-09",
-        "type": "expense",
-        "description": "Internet y cable"
+        "amount": 3200.00,
+        "description": "Freelance web development project for Acme Corp",
+        "category": "Freelance",
+        "date": "2025-08-05"
     },
     {
-        "amount": 2800,
-        "category_id": 5,
-        "date": "2025-06-10",
-        "type": "expense",
-        "description": "Viaje Cabify trabajo"
+        "amount": 120.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2025-08-06"
     },
     {
-        "amount": 6500,
-        "category_id": 8,
-        "date": "2023-08-11",
-        "type": "expense",
-        "description": "Cena con amigos"
+        "amount": 200.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2025-08-07"
     },
     {
-        "amount": 23000,
-        "category_id": 9,
-        "date": "2023-09-12",
-        "type": "expense",
-        "description": "Curso Data Engineering Udemy"
+        "amount": 60.00,
+        "description": "Dinner at Italian restaurant",
+        "category": "Food",
+        "date": "2025-08-08"
     },
     {
-        "amount": 1500,
-        "category_id": 4,
-        "date": "2025-07-13",
-        "type": "expense",
-        "description": "Panadería"
+        "amount": 300.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2025-08-09"
     },
     {
-        "amount": 2700,
-        "category_id": 4,
-        "date": "2023-11-14",
-        "type": "expense",
-        "description": "Desayuno fuera"
+        "amount": 45.00,
+        "description": "Internet bill for August",
+        "category": "Utilities",
+        "date": "2025-08-10"
     },
     {
-        "amount": 54000,
-        "category_id": 3,
-        "date": "2024-12-01",
-        "type": "expense",
-        "description": "Alquiler diciembre"
+        "amount": 1300.00,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2025-09-01"
     },
     {
-        "amount": 11000,
-        "category_id": 4,
-        "date": "2025-05-20",
-        "type": "expense",
-        "description": "Supermercado Jumbo"
+        "amount": 260.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2025-09-02"
     },
     {
-        "amount": 3000,
-        "category_id": 5,
-        "date": "2024-07-19",
-        "type": "expense",
-        "description": "Carga combustible"
+        "amount": 85.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2025-09-03"
     },
     {
-        "amount": 4800,
-        "category_id": 6,
-        "date": "2025-01-25",
-        "type": "expense",
-        "description": "Factura gas Metrogas"
+        "amount": 520.00,
+        "description": "Bought Ethereum on Coinbase",
+        "category": "Cryptocurrency",
+        "date": "2025-09-04"
     },
     {
-        "amount": 7700,
-        "category_id": 8,
-        "date": "2023-10-18",
-        "type": "expense",
-        "description": "Spotify + Netflix"
+        "amount": 3300.00,
+        "description": "Freelance mobile app for Beta LLC",
+        "category": "Freelance",
+        "date": "2025-09-05"
     },
     {
-        "amount": 400000,
-        "category_id": 1,
-        "date": "2025-07-15",
-        "type": "investment",
-        "description": "Compra 300usd SPX500"
+        "amount": 125.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2025-09-06"
     },
     {
-        "amount": 120000,
-        "category_id": 1,
-        "date": "2023-10-18",
-        "type": "investment",
-        "description": "Compra BTC 0.002"
+        "amount": 210.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2025-09-07"
     },
     {
-        "amount": 100000,
-        "category_id": 1,
-        "date": "2024-01-19",
-        "type": "investment",
-        "description": "Bonos AL30"
+        "amount": 65.00,
+        "description": "Dinner at sushi restaurant",
+        "category": "Food",
+        "date": "2025-09-08"
     },
     {
-        "amount": 80000,
-        "category_id": 1,
-        "date": "2025-02-20",
-        "type": "investment",
-        "description": "ETF QQQ"
+        "amount": 310.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2025-09-09"
     },
     {
-        "amount": 95000,
-        "category_id": 1,
-        "date": "2023-05-25",
-        "type": "investment",
-        "description": "CEDEAR Apple"
+        "amount": 50.00,
+        "description": "Internet bill for September",
+        "category": "Utilities",
+        "date": "2025-09-10"
     },
     {
-        "amount": 45000,
-        "category_id": 1,
-        "date": "2025-07-28",
-        "type": "investment",
-        "description": "Plazo fijo 30 días"
+        "amount": 1150.00,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2024-08-01"
     },
     {
-        "amount": 110000,
-        "category_id": 1,
-        "date": "2025-07-30",
-        "type": "investment",
-        "description": "ETH 0.03"
+        "amount": 240.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2024-08-02"
     },
     {
-        "amount": 65000,
-        "category_id": 1,
-        "date": "2024-06-28",
-        "type": "investment",
-        "description": "Fondos comunes de inversión"
+        "amount": 75.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2024-08-03"
     },
     {
-        "amount": 57000,
-        "category_id": 1,
-        "date": "2024-02-08",
-        "type": "investment",
-        "description": "Compra dólar MEP"
+        "amount": 480.00,
+        "description": "Bought Litecoin on Coinbase",
+        "category": "Cryptocurrency",
+        "date": "2024-08-04"
     },
     {
-        "amount": 88000,
-        "category_id": 1,
-        "date": "2024-10-21",
-        "type": "investment",
-        "description": "Acciones MercadoLibre"
+        "amount": 3100.00,
+        "description": "Freelance design for Gamma Inc",
+        "category": "Freelance",
+        "date": "2024-08-05"
     },
     {
-        "amount": 98000,
-        "category_id": 2,
-        "date": "2023-01-01",
-        "type": "income",
-        "description": "Sueldo enero"
+        "amount": 110.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2024-08-06"
     },
     {
-        "amount": 15000,
-        "category_id": 4,
-        "date": "2024-03-03",
-        "type": "expense",
-        "description": "PedidosYa fin de semana"
+        "amount": 190.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2024-08-07"
     },
     {
-        "amount": 37000,
-        "category_id": 7,
-        "date": "2024-05-05",
-        "type": "income",
-        "description": "Consultoría freelance breve"
+        "amount": 55.00,
+        "description": "Dinner at steakhouse",
+        "category": "Food",
+        "date": "2024-08-08"
     },
     {
-        "amount": 45000,
-        "category_id": 6,
-        "date": "2023-12-06",
-        "type": "expense",
-        "description": "Factura agua y electricidad"
+        "amount": 290.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2024-08-09"
     },
     {
-        "amount": 89000,
-        "category_id": 10,
-        "date": "2025-03-07",
-        "type": "income",
-        "description": "Transferencia ahorro a cuenta externa"
+        "amount": 40.00,
+        "description": "Internet bill for August",
+        "category": "Utilities",
+        "date": "2024-08-10"
+    },
+    {
+        "amount": 1250.00,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2023-08-01"
+    },
+    {
+        "amount": 255.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2023-08-02"
+    },
+    {
+        "amount": 82.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2023-08-03"
+    },
+    {
+        "amount": 510.00,
+        "description": "Bought Bitcoin on Coinbase",
+        "category": "Cryptocurrency",
+        "date": "2023-08-04"
+    },
+    {
+        "amount": 3250.00,
+        "description": "Freelance web development for Delta Ltd",
+        "category": "Freelance",
+        "date": "2023-08-05"
+    },
+    {
+        "amount": 122.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2023-08-06"
+    },
+    {
+        "amount": 205.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2023-08-07"
+    },
+    {
+        "amount": 62.00,
+        "description": "Dinner at Italian restaurant",
+        "category": "Food",
+        "date": "2023-08-08"
+    },
+    {
+        "amount": 305.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2023-08-09"
+    },
+    {
+        "amount": 48.00,
+        "description": "Internet bill for August",
+        "category": "Utilities",
+        "date": "2023-08-10"
+    },
+    {
+        "amount": 1300.00,
+        "description": "Bonus payment",
+        "category": "Salary",
+        "date": "2025-12-15"
+    },
+    {
+        "amount": 300.00,
+        "description": "Sold old laptop",
+        "category": "Sales",
+        "date": "2025-12-16"
+    },
+    {
+        "amount": 150.00,
+        "description": "Groceries at organic market",
+        "category": "Food",
+        "date": "2025-12-17"
+    },
+    {
+        "amount": 90.00,
+        "description": "Taxi ride",
+        "category": "Transport",
+        "date": "2025-12-18"
+    },
+    {
+        "amount": 600.00,
+        "description": "Bought stocks",
+        "category": "Investment",
+        "date": "2025-12-19"
+    },
+    {
+        "amount": 3500.00,
+        "description": "Freelance consulting for Zeta Group",
+        "category": "Freelance",
+        "date": "2025-12-20"
+    },
+    {
+        "amount": 130.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2025-12-21"
+    },
+    {
+        "amount": 220.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2025-12-22"
+    },
+    {
+        "amount": 70.00,
+        "description": "Dinner at Thai restaurant",
+        "category": "Food",
+        "date": "2025-12-23"
+    },
+    {
+        "amount": 320.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2025-12-24"
+    },
+    {
+        "amount": 52.00,
+        "description": "Internet bill for December",
+        "category": "Utilities",
+        "date": "2025-12-25"
+    },
+    {
+        "amount": 1400.00,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2024-12-01"
+    },
+    {
+        "amount": 270.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2024-12-02"
+    },
+    {
+        "amount": 88.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2024-12-03"
+    },
+    {
+        "amount": 540.00,
+        "description": "Bought mutual funds",
+        "category": "Investment",
+        "date": "2024-12-04"
+    },
+    {
+        "amount": 3400.00,
+        "description": "Freelance design for Omega LLC",
+        "category": "Freelance",
+        "date": "2024-12-05"
+    },
+    {
+        "amount": 128.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2024-12-06"
+    },
+    {
+        "amount": 230.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2024-12-07"
+    },
+    {
+        "amount": 68.00,
+        "description": "Dinner at burger place",
+        "category": "Food",
+        "date": "2024-12-08"
+    },
+    {
+        "amount": 315.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2024-12-09"
+    },
+    {
+        "amount": 54.00,
+        "description": "Internet bill for December",
+        "category": "Utilities",
+        "date": "2024-12-10"
+    },
+    {
+        "amount": 1100.00,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2023-12-01"
+    },
+    {
+        "amount": 230.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2023-12-02"
+    },
+    {
+        "amount": 70.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2023-12-03"
+    },
+    {
+        "amount": 450.00,
+        "description": "Bought gold ETF",
+        "category": "Investment",
+        "date": "2023-12-04"
+    },
+    {
+        "amount": 3000.00,
+        "description": "Freelance translation for Sigma Ltd",
+        "category": "Freelance",
+        "date": "2023-12-05"
+    },
+    {
+        "amount": 100.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2023-12-06"
+    },
+    {
+        "amount": 180.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2023-12-07"
+    },
+    {
+        "amount": 50.00,
+        "description": "Dinner at pizza place",
+        "category": "Food",
+        "date": "2023-12-08"
+    },
+    {
+        "amount": 280.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2023-12-09"
+    },
+    {
+        "amount": 38.00,
+        "description": "Internet bill for December",
+        "category": "Utilities",
+        "date": "2023-12-10"
+    },
+    {
+        "amount": 1250.00,
+        "description": "Bonus payment",
+        "category": "Salary",
+        "date": "2024-06-15"
+    },
+    {
+        "amount": 320.00,
+        "description": "Sold old phone",
+        "category": "Sales",
+        "date": "2024-06-16"
+    },
+    {
+        "amount": 160.00,
+        "description": "Groceries at organic market",
+        "category": "Food",
+        "date": "2024-06-17"
+    },
+    {
+        "amount": 95.00,
+        "description": "Taxi ride",
+        "category": "Transport",
+        "date": "2024-06-18"
+    },
+    {
+        "amount": 610.00,
+        "description": "Bought stocks",
+        "category": "Investment",
+        "date": "2024-06-19"
+    },
+    {
+        "amount": 3550.00,
+        "description": "Freelance consulting for Lambda Group",
+        "category": "Freelance",
+        "date": "2024-06-20"
+    },
+    {
+        "amount": 135.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2024-06-21"
+    },
+    {
+        "amount": 225.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2024-06-22"
+    },
+    {
+        "amount": 72.00,
+        "description": "Dinner at Thai restaurant",
+        "category": "Food",
+        "date": "2024-06-23"
+    },
+    {
+        "amount": 325.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2024-06-24"
+    },
+    {
+        "amount": 56.00,
+        "description": "Internet bill for June",
+        "category": "Utilities",
+        "date": "2024-06-25"
+    },
+    {
+        "amount": 1400.00,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2022-06-01"
+    },
+    {
+        "amount": 270.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2022-06-02"
+    },
+    {
+        "amount": 88.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2022-06-03"
+    },
+    {
+        "amount": 540.00,
+        "description": "Bought mutual funds",
+        "category": "Investment",
+        "date": "2022-06-04"
+    },
+    {
+        "amount": 3400.00,
+        "description": "Freelance design for Omega LLC",
+        "category": "Freelance",
+        "date": "2022-06-05"
+    },
+    {
+        "amount": 128.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2022-06-06"
+    },
+    {
+        "amount": 230.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2022-06-07"
+    },
+    {
+        "amount": 68.00,
+        "description": "Dinner at burger place",
+        "category": "Food",
+        "date": "2022-06-08"
+    },
+    {
+        "amount": 315.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2022-06-09"
+    },
+    {
+        "amount": 54.00,
+        "description": "Internet bill for June",
+        "category": "Utilities",
+        "date": "2022-06-10"
+    },
+    {
+        "amount": 1100.00,
+        "description": "Monthly salary from Tech Solutions",
+        "category": "Salary",
+        "date": "2022-12-01"
+    },
+    {
+        "amount": 230.00,
+        "description": "Groceries at supermarket",
+        "category": "Food",
+        "date": "2022-12-02"
+    },
+    {
+        "amount": 70.00,
+        "description": "Public transport card recharge",
+        "category": "Transport",
+        "date": "2022-12-03"
+    },
+    {
+        "amount": 450.00,
+        "description": "Bought gold ETF",
+        "category": "Investment",
+        "date": "2022-12-04"
+    },
+    {
+        "amount": 3000.00,
+        "description": "Freelance translation for Sigma Ltd",
+        "category": "Freelance",
+        "date": "2022-12-05"
+    },
+    {
+        "amount": 100.00,
+        "description": "Monthly gym membership",
+        "category": "Health",
+        "date": "2022-12-06"
+    },
+    {
+        "amount": 180.00,
+        "description": "Deposit to savings account",
+        "category": "Savings",
+        "date": "2022-12-07"
+    },
+    {
+        "amount": 50.00,
+        "description": "Dinner at pizza place",
+        "category": "Food",
+        "date": "2022-12-08"
+    },
+    {
+        "amount": 280.00,
+        "description": "Monthly rent payment",
+        "category": "Rent",
+        "date": "2022-12-09"
+    },
+    {
+        "amount": 38.00,
+        "description": "Internet bill for December",
+        "category": "Utilities",
+        "date": "2022-12-10"
     }
 ]

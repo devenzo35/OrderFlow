@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from ..dependencies import get_db
 from sqlalchemy.orm import Session
 from ..models.user import User
@@ -27,6 +27,10 @@ async def get_all_users(
 @router.get("/{userId}", response_model=UserPublic)
 async def get_user(userId: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == userId).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User does not exist"
+        )
     return user
 
 

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi import APIRouter, status, Depends
 from ..models.category import Category
 from ..models.user import User
 from ..schemas.categories import CategoryCreate
@@ -11,6 +11,8 @@ router = APIRouter(
     tags=["categories"],
     responses={404: {"message": status.HTTP_404_NOT_FOUND}},
 )
+
+# crear categorias y movimientos
 
 
 @router.post("/", response_model=CategoryCreate)
