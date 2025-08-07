@@ -4,6 +4,7 @@ from app.router.auth import router as auth_router
 from app.router.movements import router as movements_router
 from app.router.reports import router as reports_router
 from app.router.categories import router as categories_router
+from app.router.exports import router as reports_router
 from app.db.database import Base, engine
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,6 +20,7 @@ app.include_router(auth_router)
 app.include_router(movements_router)
 app.include_router(reports_router)
 app.include_router(categories_router)
+app.include_router(reports_router)
 
 app.add_middleware(CORSMiddleware, allow_origins=origins)
 

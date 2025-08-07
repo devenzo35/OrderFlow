@@ -4,5 +4,8 @@ pytest
 httpx
 dotenv
 PyJWT
-passlib[bcrypt]
+"passlib[bcrypt]"
 alembic
+pip install reportlab
+pip instal openpyxl
+"fastapi["standard"]"
