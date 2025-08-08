@@ -1,11 +1,11 @@
+fastapi[standard]
+passlib[bcrypt]
 sqlalchemy 
 psycopg2-binary
 pytest
 httpx
 dotenv
 PyJWT
-"passlib[bcrypt]"
 alembic
-pip install reportlab
-pip instal openpyxl
-"fastapi["standard"]"
+reportlab
+openpyxl

@@ -36,6 +36,13 @@ async def create_movement(
     current_user: User = Depends(get_current_user),
 ):
 
+    # Business rule: Amount must be positive to ensure only valid income entries.
+    if movement.amount <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Amount must be greater than zero",
+        )
+
     category_db = (
         (db.query(Category).filter(Category.name == movement.category))
         .filter(Category.user_id == current_user.id)
