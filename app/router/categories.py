@@ -22,6 +22,7 @@ async def create_category(
     current_user: User = Depends(get_current_user),
 ):
 
+    # Business rule: The category name must be unique per user.
     exists = db.query(Category).filter(Category.name == category.name).first()
 
     if exists:
