@@ -8,15 +8,14 @@ on:
 
 jobs:
   build:
-    
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-    
+
       - name: Set up python 3.9
         uses: actions/setup-python@v3
-        with: 
+        with:
           python-version: 3.9
 
       - name: Install dependencies
@@ -25,5 +24,7 @@ jobs:
           pip install -r requirements.txt
           pip install -e .
       - name: Run tests
-        run: | 
-          pytest 
+        run: |
+          pytest
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
