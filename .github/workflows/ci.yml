@@ -18,7 +18,7 @@ jobs:
           POSTGRES_PASSWORD: testpassword
           POSTGRES_DB: testdb
         ports:
-          - 5433:5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -43,4 +43,4 @@ jobs:
         run: |
           pytest
         env:
-          DATABASE_URL: "postgresql://testuser:testpassword@localhost:5432/testdb"
+          DATABASE_URL: "postgresql://testuser:testpassword@db:5432/testdb"
