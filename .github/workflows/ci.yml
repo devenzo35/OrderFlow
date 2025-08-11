@@ -20,7 +20,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U testuser -d testdb"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -38,6 +38,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e .
+
+      - name: Wait for DB to be ready
+        run: |
+          until pg_isready -h db -p 5432 -U testuser; do
+            echo "Waiting for postgres..."
+            sleep 2
+          done
 
       - name: Run tests
         run: |
