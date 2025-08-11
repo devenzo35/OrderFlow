@@ -39,13 +39,6 @@ jobs:
           pip install -r requirements.txt
           pip install -e .
 
-      - name: Wait for DB to be ready
-        run: |
-          until pg_isready -h db -p 5432 -U testuser; do
-            echo "Waiting for postgres..."
-            sleep 2
-          done
-
       - name: Run tests
         run: |
           pytest
