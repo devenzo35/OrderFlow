@@ -1,20 +1,25 @@
 from fastapi import APIRouter, status, Depends, HTTPException
-from ..dependencies import get_db
+from ...dependencies import get_db, get_current_user
 from sqlalchemy.orm import Session
-from ..models.user import User
-from ..models.category import Category
-from ..models.movements import Movement
-from ..schemas.movements import CreateMovement, MovementPublic, UpdateMovement
-from .auth import get_current_user
+
+# from ..models.user import User
+# from ..models.category import Category
+# from ..models.movements import Movement
+
+from app.models import Category, User, Movement
+
+
+from app.schemas import CreateMovement, MovementPublic, UpdateMovement
+
 
 router = APIRouter(
-    prefix="/movements",
-    tags=["movements"],
+    prefix="/api/v1/movements",
+    tags=["Movements V1"],
     responses={404: {"message": status.HTTP_404_NOT_FOUND}},
 )
 
 
-@router.get("/all", response_model=list[MovementPublic])
+@router.get("/", response_model=list[MovementPublic])
 def get_my_movements(
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
@@ -29,7 +34,7 @@ def get_my_movements(
     return [movement for movement in movements]
 
 
-@router.post("/create", response_model=MovementPublic, status_code=201)
+@router.post("/", response_model=MovementPublic, status_code=201)
 async def create_movement(
     movement: CreateMovement,
     db: Session = Depends(get_db),
@@ -89,7 +94,7 @@ def get_movement(
     return movement
 
 
-@router.patch("/update/{movement_id}", status_code=200)  # response_model=MovementPublic
+@router.patch("/{movement_id}", status_code=200)  # response_model=MovementPublic
 async def update_movement(
     movement_id: int,
     movement_update: UpdateMovement,

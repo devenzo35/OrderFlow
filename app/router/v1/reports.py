@@ -1,18 +1,18 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 from typing import Annotated
 from datetime import datetime, timezone, date
-from ..schemas.reports import MonthlyBalance, CategoryDistribution
+from app.schemas import MonthlyBalance, CategoryDistribution
 
-# from ..models.reports import Reports
-from ..models.movements import Movement
-from ..models.category import Category
-from ..dependencies import get_db
+
+from app.models import Movement, Category
+
+from ...dependencies import get_db
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 router = APIRouter(
-    prefix="/reports",
-    tags=["reports"],
+    prefix="/api/v1/reports",
+    tags=["Reports V1"],
     responses={404: {"message": status.HTTP_404_NOT_FOUND}},
 )
 

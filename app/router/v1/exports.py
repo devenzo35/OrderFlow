@@ -1,13 +1,11 @@
 from fastapi import APIRouter, status, Query, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from ..models.category import Category
-from ..models.movements import Movement
+from app.models import Category, Movement
 from typing import Annotated
-from ..dependencies import get_db
+from ...dependencies import get_db
 from fastapi.responses import StreamingResponse
 from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from io import StringIO, BytesIO
 import csv
 from datetime import date
@@ -18,14 +16,14 @@ from reportlab.lib import colors
 
 
 router = APIRouter(
-    prefix="/export",
-    tags=["export"],
+    prefix="/api/v1/export",
+    tags=["Export V1"],
     responses={status.HTTP_400_BAD_REQUEST: {"message": "URL Not Found"}},
 )
 
 
 @router.get("/by-category/csv")
-def export_category_report(
+def export_category_report_csv(
     start_date: Annotated[date, Query()],
     end_date: Annotated[date, Query()],
     db: Session = Depends(get_db),

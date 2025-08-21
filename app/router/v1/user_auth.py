@@ -1,43 +1,42 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Annotated, Callable
-from app.schemas.users import UserPublic, UserCreate, TokenRefreshRequest
-from app.models.user import User
+
+from app.schemas import UserPublic, UserCreate, TokenRefreshRequest
+from app.models import User
+
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import jwt
 from jwt.exceptions import InvalidTokenError
+from app.core.config import (
+    SECRET_KEY,
+    ALGORITHM,
+    TOKEN_EXPIRATION_MINUTES,
+    REFRESH_TOKEN_EXPIRE_DAYS,
+)
+from app.dependencies import get_db, get_current_user
+from ...services.validators import userValidator, JWTValidator
 
-from ..dependencies import get_db
-from ..services.validators import userValidator, JWTValidator
-
-from dotenv import load_dotenv
-import os
 from datetime import timedelta, timezone, datetime
 
-load_dotenv()
 
-ALGORITHM = "HS256"
-SECRET_KEY = os.getenv("SECRET_KEY")
-TOKEN_EXPIRATION_MINUTES = 30
-REFRESH_TOKEN_EXPIRE_DAYS = 7
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 OAuth2 = OAuth2PasswordBearer("/login")
 
 router = APIRouter(
-    prefix="/auth",
-    tags=["auth"],
+    prefix="/api/v1/auth",
+    tags=["Auth V1"],
     responses={404: {"description": "Not found"}},
-)
-
-credentials_exception = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Could not validate credentials",
-    headers={"WWW-Authenticate": "Bearer"},
 )
 
 
@@ -68,41 +67,6 @@ def generate_refresh_token(data: dict[str, str | datetime]):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)  # type: ignore
 
     return encoded_jwt
-
-
-async def get_current_user(
-    token: Annotated[str, Depends(OAuth2)], db: Session = Depends(get_db)
-):
-
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])  # type:ignore
-        id: int = payload.get("sub")
-
-        if not id:
-            raise credentials_exception
-
-    except InvalidTokenError:
-
-        raise credentials_exception
-
-    user = db.query(User).filter(User.id == id).first()
-
-    if not user:
-        raise credentials_exception
-
-    return user
-
-
-async def get_current_active_user(
-    currentUser: Annotated[User, Depends(get_current_user)],
-):
-    if not currentUser.is_active:
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="User is inactive, please contact with OrderFlow support service!",
-        )
-
-    return currentUser
 
 
 def role_required(required_roles: list[str]) -> Callable[[User], User]:
@@ -179,7 +143,7 @@ def login(
 
 @router.get("/me", response_model=UserPublic)
 async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_active_user)],
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     return current_user
 

@@ -1,7 +1,23 @@
-from typing import Annotated
-
-from fastapi import Header, HTTPException, status, Depends
 from app.db.database import SessionLocal
+from fastapi import Depends, HTTPException, status
+from app.models.user import User
+import jwt
+from jwt.exceptions import InvalidTokenError
+from sqlalchemy.orm import Session
+from typing import Annotated
+from fastapi.security import OAuth2PasswordBearer
+
+from app.core.config import SECRET_KEY, ALGORITHM
+
+
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
+
+OAuth2 = OAuth2PasswordBearer("/login")
 
 
 def get_db():
@@ -12,13 +28,30 @@ def get_db():
         db.close()
 
 
-async def get_token_header(x_token: Annotated[str, Depends(Header())]):
-    if not x_token:
+async def get_current_user(
+    token: Annotated[str, Depends(OAuth2)], db: Session = Depends(get_db)
+):
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])  # type:ignore
+        id: int = payload.get("sub")
+
+        if not id:
+            raise credentials_exception
+
+    except InvalidTokenError:
+
+        raise credentials_exception
+
+    user = db.query(User).filter(User.id == id).first()
+
+    if not user:
+        raise credentials_exception
+
+    if not user.is_active:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="X-Token is invalid"
+            status.HTTP_400_BAD_REQUEST,
+            detail="User is inactive, please contact with OrderFlow support service!",
         )
 
-
-async def get_query_token(token: str):
-    if token != "query":
-        raise HTTPException(status_code=400, detail="No Jessica token provided")
+    return user
