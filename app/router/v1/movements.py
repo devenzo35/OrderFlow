@@ -6,8 +6,14 @@ from sqlalchemy.orm import Session
 # from ..models.category import Category
 # from ..models.movements import Movement
 
-from app.models import Category, User, Movement
-
+from app.models import User
+from app.services.movements import (
+    get_movements_v1,
+    get_movement_v1,
+    create_movement_v1,
+    update_movement_v1,
+    delete_movement_v1,
+)
 
 from app.schemas import CreateMovement, MovementPublic, UpdateMovement
 
@@ -20,18 +26,10 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[MovementPublic])
-def get_my_movements(
+async def get_movements(
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
-    movements = db.query(Movement).filter(Movement.user_id == current_user.id).all()
-
-    if not movements:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User {current_user.username} has no movements yet",
-        )
-
-    return [movement for movement in movements]
+    return await get_movements_v1(db, current_user)
 
 
 @router.post("/", response_model=MovementPublic, status_code=201)
@@ -40,50 +38,16 @@ async def create_movement(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-
-    # Business rule: Amount must be positive to ensure only valid income entries.
-    if movement.amount <= 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Amount must be greater than zero",
-        )
-
-    category_db = (
-        (db.query(Category).filter(Category.name == movement.category))
-        .filter(Category.user_id == current_user.id)
-        .first()
-    )
-
-    if not category_db:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Category does not exist"
-        )
-
-    new_movement = Movement(
-        **movement.model_dump(exclude={"category"}),
-        user_id=current_user.id,
-        category_id=category_db.id,
-    )
-
-    db.add(new_movement)
-    db.commit()
-    db.refresh(new_movement)
-
-    return new_movement
+    return await create_movement_v1(movement, db, current_user)
 
 
 @router.get("/{movement_id}", response_model=MovementPublic)
-def get_movement(
+async def get_movement(
     movement_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    movement = (
-        db.query(Movement)
-        .filter(Movement.id == movement_id)
-        .filter(Movement.user_id == current_user.id)
-        .first()
-    )
+    return await get_movement_v1(movement_id, db, current_user)
 
     if not movement:
         raise HTTPException(
@@ -102,32 +66,7 @@ async def update_movement(
     current_user: User = Depends(get_current_user),
 ):
 
-    movement_to_update = (
-        db.query(Movement)
-        .filter(Movement.id == movement_id)
-        .filter(Movement.user_id == current_user.id)
-    ).first()
-    if not movement_to_update:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Movement does not exist")
-
-    movement_fields = movement_update.model_dump(exclude_unset=True)
-
-    forbidden_fields = ["created_at", "id", "user_id"]
-
-    for field in movement_fields:
-        if field in forbidden_fields:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Forbidden action",
-            )
-
-    for field, value in movement_fields.items():
-        setattr(movement_to_update, field, value)
-
-    db.commit()
-    db.refresh(movement_to_update)
-
-    return movement_to_update
+    return await update_movement_v1(movement_id, movement_update, db, current_user)
 
 
 @router.delete("/{movement_id}", response_model=MovementPublic)
@@ -136,20 +75,4 @@ async def delete_movement(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-
-    movement = (
-        db.query(Movement)
-        .filter(Movement.id == movement_id)
-        .filter(Movement.user_id == current_user.id)
-        .first()
-    )
-
-    if not movement:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Movement does not exist"
-        )
-
-    db.delete(movement)
-    db.commit()
-
-    return movement
+    return await delete_movement_v1(movement_id, db, current_user)

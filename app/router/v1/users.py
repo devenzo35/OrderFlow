@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.models import User
 from app.schemas import UserPublic
 from typing import Annotated
-from .user_auth import role_required
+from app.services.user_auth import role_required
 from app.services.users import get_users_v1, get_user_v1
 
 router = APIRouter(

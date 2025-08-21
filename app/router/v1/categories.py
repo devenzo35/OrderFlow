@@ -18,8 +18,6 @@ router = APIRouter(
     responses={404: {"message": status.HTTP_404_NOT_FOUND}},
 )
 
-# crear categorias y movimientos
-
 
 @router.get("/", response_model=list[CategoryPublic])
 async def get_categories(
@@ -61,7 +59,7 @@ async def update_category(
     return await update_category_v1(category, category_id, db, current_user)
 
 
-@router.delete("/{category_id}")
+@router.delete("/{category_id}", response_model=CategoryPublic)
 async def delete_category(
     category_id: int,
     db: Session = Depends(get_db),
