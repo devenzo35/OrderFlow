@@ -1,7 +1,8 @@
 from ..db.database import Base
 from sqlalchemy.orm import Mapped, mapped_column as Column
 from sqlalchemy import ForeignKey, String, Enum
-import datetime, enum
+import datetime
+import enum
 
 
 class ReportTypes(str, enum.Enum):

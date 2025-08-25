@@ -3,18 +3,47 @@ from app.models import Movement, User
 from app.models.category import Category
 from app.schemas import CreateMovement, UpdateMovement
 from sqlalchemy.orm import Session
+import math
 
 
-async def get_movements_v1(db: Session, current_user: User):
-    movements = db.query(Movement).filter(Movement.user_id == current_user.id).all()
+async def get_movements_v1(
+    db: Session, current_user: User, page_size: int = 10, page: int = 1
+):
+    offset = (page - 1) * page_size
 
-    if not movements:
+    db_movements = db.query(Movement).filter(Movement.user_id == current_user.id)
+
+    total_movements = db_movements.count()
+
+    if total_movements == 0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User {current_user.username} has no movements yet",
         )
 
-    return [movement for movement in movements]
+    filtered_movements = db_movements.limit(page_size).offset(offset).all()
+    total_pages = math.ceil(float(total_movements / page_size))
+
+    previous = (
+        f"api/v1/movements?page={page - 1}&page_size={page_size}" if page > 1 else None
+    )
+    next = (
+        f"api/v1/movements?page={page + 1}&page_size={page_size}"
+        if page < total_pages
+        else None
+    )
+
+    return {
+        "data": [movement for movement in filtered_movements],
+        "pagination": {
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+            "total": total_movements,
+            "next": next,
+            "previous": previous,
+        },
+    }  # type: ignore
 
 
 async def get_movement_v1(
@@ -43,7 +72,6 @@ async def create_movement_v1(
     db: Session,
     current_user: User,
 ):
-
     # Business rule: Amount must be positive to ensure only valid income entries.
     if movement.amount <= 0:
         raise HTTPException(
@@ -59,7 +87,7 @@ async def create_movement_v1(
 
     if not category_db:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Category does not exist"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Category does not exist"
         )
 
     new_movement = Movement(
@@ -81,7 +109,6 @@ async def update_movement_v1(
     db: Session,
     current_user: User,
 ):
-
     movement_to_update = (
         db.query(Movement)
         .filter(Movement.id == movement_id)
@@ -115,7 +142,6 @@ async def delete_movement_v1(
     db: Session,
     current_user: User,
 ):
-
     movement = (
         db.query(Movement)
         .filter(Movement.id == movement_id)

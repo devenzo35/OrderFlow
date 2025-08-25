@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, Request, status, Depends
 from app.models import User
 from app.schemas import CategoryCreate, CategoryPublic, CategoryUpdate
 from app.services.categories import (
@@ -8,9 +8,10 @@ from app.services.categories import (
     get_category_v1,
     update_category_v1,
 )
-from ...dependencies import get_db, get_current_user
+from ...dependencies import get_db, get_current_user, default_limiter  # type: ignore
 from sqlalchemy.orm import Session
 from typing import Annotated
+
 
 router = APIRouter(
     prefix="/api/v1/categories",
@@ -20,7 +21,9 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[CategoryPublic])
+@default_limiter  # type: ignore
 async def get_categories(
+    request: Request,
     current_user: Annotated[User, Depends(get_current_user)],
     db: Session = Depends(get_db),
 ):
@@ -28,7 +31,9 @@ async def get_categories(
 
 
 @router.get("/{category_id}", response_model=CategoryPublic)
+@default_limiter  # type: ignore
 async def get_category(
+    request: Request,
     category_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -39,28 +44,32 @@ async def get_category(
 
 
 @router.post("/", response_model=CategoryCreate)
+@default_limiter  # type: ignore
 async def create_category(
+    request: Request,
     category: CategoryCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-
     return await create_category_v1(category, db, current_user)
 
 
 @router.patch("/{category_id}")
+@default_limiter  # type: ignore
 async def update_category(
+    request: Request,
     category: CategoryUpdate,
     category_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-
     return await update_category_v1(category, category_id, db, current_user)
 
 
 @router.delete("/{category_id}", response_model=CategoryPublic)
+@default_limiter  # type: ignore
 async def delete_category(
+    request: Request,
     category_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),

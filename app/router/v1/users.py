@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from ...dependencies import get_db
 from sqlalchemy.orm import Session
-
+from app.core.rate_limit import limiter
+from fastapi import Request
 from app.models import User
 from app.schemas import UserPublic
 from typing import Annotated
@@ -16,7 +17,9 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[UserPublic])
+@limiter.limit("15/minute")  # type: ignore
 async def get_all_users(
+    request: Request,
     current_user: Annotated[User, Depends(role_required(["admin"]))],
     db: Annotated[Session, Depends(get_db)],
 ):
@@ -24,7 +27,8 @@ async def get_all_users(
 
 
 @router.get("/{user_id}", response_model=UserPublic)
-async def get_user(user_id: int, db: Session = Depends(get_db)):
+@limiter.limit("20/minute")  # type: ignore
+async def get_user(request: Request, user_id: int, db: Session = Depends(get_db)):
     return await get_user_v1(user_id, db)
 
 

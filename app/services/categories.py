@@ -29,7 +29,7 @@ async def get_category_v1(
 
     if not get_category:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Category does not exist"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Category does not exist"
         )
 
     return get_category

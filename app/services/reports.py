@@ -43,7 +43,6 @@ async def by_category_report_v1(
     end_month: date,
     db: Session,
 ):
-
     category_by_date = (
         db.query(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)
