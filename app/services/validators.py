@@ -1,19 +1,20 @@
 from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from ..models.user import User
 from passlib.context import CryptContext
 
 
 class userValidator:
-    def __init__(self, db: Session):
-        self.db: Session = db
+    def __init__(self, db: AsyncSession):
+        self.db: AsyncSession = db
 
-    def validate_username_email(self, username: str, email: str):
-        if self.username_exists(username):
+    async def validate_username_email(self, username: str, email: str):
+        if await self.username_exists(username):
             raise HTTPException(
                 status.HTTP_400_BAD_REQUEST, detail="Username already exists"
             )
-        if self.email_exists(email):
+        if await self.email_exists(email):
             raise HTTPException(
                 status.HTTP_400_BAD_REQUEST, detail="Email already exists"
             )
@@ -22,14 +23,16 @@ class userValidator:
         if username == password:
             raise HTTPException(
                 status.HTTP_400_BAD_REQUEST,
-                detail="Username and passoword could not be the same",
+                detail="Username and password could not be the same",
             )
 
-    def username_exists(self, username: str) -> bool:
-        return self.db.query(User).filter(User.username == username).first() is not None
+    async def username_exists(self, username: str) -> bool:
+        check = await self.db.scalar(select(User).filter(User.username == username))
+        return check is not None
 
-    def email_exists(self, email: str) -> bool:
-        return self.db.query(User).filter(User.email == email).first() is not None
+    async def email_exists(self, email: str) -> bool:
+        check = await self.db.scalar(select(User).filter(User.email == email))
+        return check is not None
 
 
 class JWTValidator:

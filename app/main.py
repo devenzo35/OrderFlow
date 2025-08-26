@@ -1,16 +1,14 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from app.router.v1.users import router as v1_users_router
 from app.router.v1.user_auth import router as v1_auth_router
 from app.router.v1.movements import router as v1_movements_router
 from app.router.v1.categories import router as v1_categories_router
 from app.router.v1.exports import router as v1_reports_router
-from app.db.database import Base, engine
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.rate_limit import limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi import _rate_limit_exceeded_handler
 
-Base.metadata.create_all(bind=engine)
 
 origins = [
     "http://localhost:8000",

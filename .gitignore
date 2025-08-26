@@ -52,3 +52,8 @@ exports/
 *.egg-info/
 dist/
 build/
+
+GEMINI.md/
+category_examples.json/
+user_examples.json/
+movements_examples.json/

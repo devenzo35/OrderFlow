@@ -2,20 +2,23 @@ from fastapi import HTTPException, status
 from app.models import Movement, User
 from app.models.category import Category
 from app.schemas import CreateMovement, UpdateMovement
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 import math
 
 
 async def get_movements_v1(
-    db: Session, current_user: User, page_size: int = 10, page: int = 1
-):
+    db: AsyncSession, current_user: User, page_size: int = 10, page: int = 1
+) -> dict[str, list[Movement] | dict[str, int | str | None]]:
     offset = (page - 1) * page_size
 
-    db_movements = db.query(Movement).filter(Movement.user_id == current_user.id)
+    db_movements = await db.scalars(
+        select(Movement).filter(Movement.user_id == current_user.id)
+    )
 
-    total_movements = db_movements.count()
+    total_movements = db_movements.all()
 
-    if total_movements == 0:
+    if len(total_movements) == 0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User {current_user.username} has no movements yet",
@@ -43,12 +46,12 @@ async def get_movements_v1(
             "next": next,
             "previous": previous,
         },
-    }  # type: ignore
+    }
 
 
 async def get_movement_v1(
     movement_id: int,
-    db: Session,
+    db: AsyncSession,
     current_user: User,
 ):
     movement = (
@@ -69,7 +72,7 @@ async def get_movement_v1(
 
 async def create_movement_v1(
     movement: CreateMovement,
-    db: Session,
+    db: AsyncSession,
     current_user: User,
 ):
     # Business rule: Amount must be positive to ensure only valid income entries.
@@ -106,7 +109,7 @@ async def create_movement_v1(
 async def update_movement_v1(
     movement_id: int,
     movement_update: UpdateMovement,
-    db: Session,
+    db: AsyncSession,
     current_user: User,
 ):
     movement_to_update = (
@@ -139,7 +142,7 @@ async def update_movement_v1(
 
 async def delete_movement_v1(
     movement_id: int,
-    db: Session,
+    db: AsyncSession,
     current_user: User,
 ):
     movement = (

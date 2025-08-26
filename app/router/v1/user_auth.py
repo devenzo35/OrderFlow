@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from typing import Annotated
 from app.schemas import UserPublic, UserCreate, TokenRefreshRequest
 from app.models import User
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app.dependencies import get_db, get_current_user, default_limiter  # type: ignore
@@ -30,7 +30,7 @@ router = APIRouter(
 @router.post("/register", status_code=201, response_model=UserPublic)
 @default_limiter  # type: ignore
 async def user_register(
-    request: Request, user: UserCreate, db: Session = Depends(get_db)
+    request: Request, user: UserCreate, db: AsyncSession = Depends(get_db)
 ):
     return await user_register_v1(user, db)
 
@@ -40,7 +40,7 @@ async def user_register(
 async def login(
     request: Request,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
     return await user_login_v1(form_data, db)
 
@@ -59,6 +59,6 @@ async def read_users_me(
 async def refresh_token(
     request: Request,
     req: TokenRefreshRequest,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
     return await refresh_token_v1(req, db)

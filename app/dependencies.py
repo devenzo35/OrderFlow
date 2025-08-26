@@ -1,4 +1,4 @@
-from app.db.database import SessionLocal
+from app.db.database import AsyncSessionLocal, asyncEngine, Base
 from fastapi import Depends, HTTPException, status
 from app.models.user import User
 import jwt
@@ -20,12 +20,14 @@ credentials_exception = HTTPException(
 OAuth2 = OAuth2PasswordBearer("/login")
 
 
-def get_db():
-    db = SessionLocal()
+async def get_db():
+    db = AsyncSessionLocal()
+    async with asyncEngine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
     try:
         yield db
     finally:
-        db.close()
+        await db.close()
 
 
 async def get_current_user(

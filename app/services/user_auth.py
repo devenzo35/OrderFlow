@@ -4,8 +4,10 @@ from typing import Callable
 from app.schemas import UserCreate, TokenRefreshRequest
 from app.models import User
 
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import select
+
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import jwt
@@ -81,36 +83,39 @@ def role_required(required_roles: list[str]) -> Callable[[User], User]:
     return wrapper
 
 
-async def user_register_v1(user: UserCreate, db: Session):
-
+async def user_register_v1(user: UserCreate, db: AsyncSession):
     validator = userValidator(db)
     jwtValidator = JWTValidator(pwd_context)
 
     validator.validate_username_password(user.username, user.password)
-    validator.validate_username_email(user.username, user.email)
+    await validator.validate_username_email(user.username, user.email)
 
     user_without_password = user.model_dump(exclude={"password"})
     user_to_create = User(**user_without_password)
     user_to_create.hashed_password = jwtValidator.hash_password(user.password)
 
     db.add(user_to_create)
+
     try:
-        db.commit()
-    except IntegrityError:
-        db.rollback()
+        await db.commit()
+    except IntegrityError as e:
+        await db.rollback()
+        print("DETAIL:", e.orig)  # mensaje original de Postgres
+        print("ARGS:", e.args)
         raise HTTPException(status_code=409, detail="Email or username already exists.")
 
-    db.refresh(user_to_create)
+    await db.refresh(user_to_create)
     return user_to_create
 
 
 async def user_login_v1(
     form_data: OAuth2PasswordRequestForm,
-    db: Session,
+    db: AsyncSession,
 ):
-
     # Here we receive username and password from the user
-    user_in_db = db.query(User).filter(User.username == form_data.username).first()
+    user_in_db = await db.scalar(
+        select(User).filter(User.username == form_data.username)
+    )
     if not user_in_db:
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST, detail="invalid username or password"
@@ -139,8 +144,7 @@ async def user_login_v1(
     }
 
 
-async def refresh_token_v1(req: TokenRefreshRequest, db: Session):
-
+async def refresh_token_v1(req: TokenRefreshRequest, db: AsyncSession):
     try:
         payload = jwt.decode(  # type:ignore
             req.refresh_token, SECRET_KEY, algorithms=[ALGORITHM]
@@ -156,7 +160,7 @@ async def refresh_token_v1(req: TokenRefreshRequest, db: Session):
     except InvalidTokenError:
         raise credentials_exception
 
-    user = db.query(User).filter(User.id == id).first()
+    user = await db.scalar(select(User).filter(User.id == id))
     if not user:
         raise credentials_exception
 
