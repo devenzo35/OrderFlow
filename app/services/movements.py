@@ -3,7 +3,7 @@ from app.models import Movement, User
 from app.models.category import Category
 from app.schemas import CreateMovement, UpdateMovement
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
 import math
 
 
@@ -12,19 +12,26 @@ async def get_movements_v1(
 ) -> dict[str, list[Movement] | dict[str, int | str | None]]:
     offset = (page - 1) * page_size
 
-    db_movements = await db.scalars(
-        select(Movement).filter(Movement.user_id == current_user.id)
+    total_movements = await db.scalar(
+        select(func.count(Movement.id)).filter(Movement.user_id == current_user.id)
     )
 
-    total_movements = db_movements.all()
-
-    if len(total_movements) == 0:
+    if not total_movements or total_movements == 0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User {current_user.username} has no movements yet",
         )
 
-    filtered_movements = db_movements.limit(page_size).offset(offset).all()
+    filtered_movements = await db.scalars(
+        select(Movement).limit(page_size).offset(offset)
+    )
+
+    if not filtered_movements:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User {current_user.username} has no movements yet",
+        )
+
     total_pages = math.ceil(float(total_movements / page_size))
 
     previous = (
@@ -54,11 +61,10 @@ async def get_movement_v1(
     db: AsyncSession,
     current_user: User,
 ):
-    movement = (
-        db.query(Movement)
+    movement = await db.scalar(
+        select(Movement)
         .filter(Movement.id == movement_id)
         .filter(Movement.user_id == current_user.id)
-        .first()
     )
 
     if not movement:
@@ -82,10 +88,10 @@ async def create_movement_v1(
             detail="Amount must be greater than zero",
         )
 
-    category_db = (
-        (db.query(Category).filter(Category.name == movement.category))
+    category_db = await db.scalar(
+        select(Category)
+        .filter(Category.name == movement.category)
         .filter(Category.user_id == current_user.id)
-        .first()
     )
 
     if not category_db:
@@ -100,8 +106,8 @@ async def create_movement_v1(
     )
 
     db.add(new_movement)
-    db.commit()
-    db.refresh(new_movement)
+    await db.commit()
+    await db.refresh(new_movement)
 
     return new_movement
 
@@ -112,11 +118,12 @@ async def update_movement_v1(
     db: AsyncSession,
     current_user: User,
 ):
-    movement_to_update = (
-        db.query(Movement)
+    movement_to_update = await db.scalar(
+        select(Movement)
         .filter(Movement.id == movement_id)
         .filter(Movement.user_id == current_user.id)
-    ).first()
+    )
+
     if not movement_to_update:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Movement does not exist")
 
@@ -134,8 +141,8 @@ async def update_movement_v1(
     for field, value in movement_fields.items():
         setattr(movement_to_update, field, value)
 
-    db.commit()
-    db.refresh(movement_to_update)
+    await db.commit()
+    await db.refresh(movement_to_update)
 
     return movement_to_update
 
@@ -145,11 +152,10 @@ async def delete_movement_v1(
     db: AsyncSession,
     current_user: User,
 ):
-    movement = (
-        db.query(Movement)
+    movement = await db.scalar(
+        select(Movement)
         .filter(Movement.id == movement_id)
         .filter(Movement.user_id == current_user.id)
-        .first()
     )
 
     if not movement:
@@ -157,7 +163,7 @@ async def delete_movement_v1(
             status_code=status.HTTP_404_NOT_FOUND, detail="Movement does not exist"
         )
 
-    db.delete(movement)
-    db.commit()
+    await db.delete(movement)
+    await db.commit()
 
     return movement

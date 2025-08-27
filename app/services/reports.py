@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import func, select
 from app.models import Movement, Category
 from datetime import date
 
@@ -8,7 +8,7 @@ from datetime import date
 async def monthly_report_v1(
     year: int,
     month: int,
-    db: Session,
+    db: AsyncSession,
 ):
     start_date = date(year, month, 1)
 
@@ -17,13 +17,13 @@ async def monthly_report_v1(
     else:
         end_date = date(start_date.year, start_date.month + 1, 1)
 
-    monthly_movements = (
-        db.query(Category.type, func.sum(Movement.amount))
+    monthly_movements = await db.scalars(
+        select(Category.type, func.sum(Movement.amount))
         .join(Movement, Movement.category_id == Category.id)
         .filter(Movement.date >= start_date)
         .filter(Movement.date < end_date)
         .group_by(Category.type)
-    ).all()
+    )
 
     if not monthly_movements:
         raise HTTPException(
@@ -41,15 +41,15 @@ async def monthly_report_v1(
 async def by_category_report_v1(
     start_month: date,
     end_month: date,
-    db: Session,
+    db: AsyncSession,
 ):
-    category_by_date = (
-        db.query(Category.name, func.sum(Movement.amount))
+    category_by_date = await db.scalars(
+        select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)
         .filter(Movement.date >= start_month)
         .filter(Movement.date <= end_month)
         .group_by(Category.name)
-    ).all()
+    )
 
     # summary: list[dict[str, str | int]] = []
 

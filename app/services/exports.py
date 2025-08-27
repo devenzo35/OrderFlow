@@ -1,5 +1,5 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import func, select
 from app.models import Category, Movement
 
 from fastapi.responses import StreamingResponse
@@ -16,15 +16,15 @@ from reportlab.lib import colors
 async def by_category_report_csv_v1(
     start_date: date,
     end_date: date,
-    db: Session,
+    db: AsyncSession,
 ):
-    category_by_date = (
-        db.query(Category.name, func.sum(Movement.amount))
+    category_by_date = await db.scalar(
+        select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)
         .filter(Movement.date >= start_date)
         .filter(Movement.date <= end_date)
         .group_by(Category.name)
-    ).all()
+    )
 
     output = StringIO()
     writer = csv.writer(output)
@@ -47,15 +47,15 @@ async def by_category_report_csv_v1(
 async def by_category_report_xslx_v1(
     start_date: date,
     end_date: date,
-    db: Session,
+    db: AsyncSession,
 ):
-    category_by_date = (
-        db.query(Category.name, func.sum(Movement.amount))
+    category_by_date = await db.scalar(
+        select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)
         .filter(Movement.date >= start_date)
         .filter(Movement.date <= end_date)
         .group_by(Category.name)
-    ).all()
+    )
 
     wb = Workbook()
     ws = wb.active
@@ -83,15 +83,15 @@ async def by_category_report_xslx_v1(
 async def by_category_report_pdf_v1(
     start_date: date,
     end_date: date,
-    db: Session,
+    db: AsyncSession,
 ):
-    category_by_date = (
-        db.query(Category.name, func.sum(Movement.amount))
+    category_by_date = await db.scalar(
+        select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)
         .filter(Movement.date >= start_date)
         .filter(Movement.date <= end_date)
         .group_by(Category.name)
-    ).all()
+    )
 
     buffer = BytesIO()
 
