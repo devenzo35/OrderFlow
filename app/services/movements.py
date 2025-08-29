@@ -3,6 +3,7 @@ from app.models import Movement, User
 from app.models.category import Category
 from app.schemas import CreateMovement, UpdateMovement
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from sqlalchemy import select, func
 import math
 
@@ -23,7 +24,10 @@ async def get_movements_v1(
         )
 
     filtered_movements = await db.scalars(
-        select(Movement).limit(page_size).offset(offset)
+        select(Movement)
+        .filter(Movement.user_id == current_user.id)
+        .limit(page_size)
+        .offset(offset)
     )
 
     if not filtered_movements:
@@ -63,6 +67,7 @@ async def get_movement_v1(
 ):
     movement = await db.scalar(
         select(Movement)
+        .options(selectinload(Movement.category))
         .filter(Movement.id == movement_id)
         .filter(Movement.user_id == current_user.id)
     )
@@ -90,13 +95,24 @@ async def create_movement_v1(
 
     category_db = await db.scalar(
         select(Category)
-        .filter(Category.name == movement.category)
+        .filter(Category.name == movement.category.lower())
         .filter(Category.user_id == current_user.id)
     )
 
     if not category_db:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Category does not exist"
+        )
+
+    exists = await db.scalar(
+        select(Movement)
+        .filter(Movement.description == movement.description)
+        .filter(Movement.category_id == category_db.id)
+        .filter(Movement.user_id == current_user.id)
+    )
+    if exists:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Movement already exists"
         )
 
     new_movement = Movement(
@@ -109,12 +125,19 @@ async def create_movement_v1(
     await db.commit()
     await db.refresh(new_movement)
 
-    return new_movement
+    result = await db.scalar(
+        select(Movement)
+        .options(selectinload(Movement.category))
+        .filter(Movement.id == new_movement.id)
+    )
+
+    return result
 
 
+# TODO: Work in update movement and handle movement category update
 async def update_movement_v1(
     movement_id: int,
-    movement_update: UpdateMovement,
+    movement_data: UpdateMovement,
     db: AsyncSession,
     current_user: User,
 ):
@@ -123,11 +146,24 @@ async def update_movement_v1(
         .filter(Movement.id == movement_id)
         .filter(Movement.user_id == current_user.id)
     )
-
     if not movement_to_update:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Movement does not exist")
 
-    movement_fields = movement_update.model_dump(exclude_unset=True)
+    movement_fields = movement_data.model_dump(exclude_unset=True, exclude={"category"})
+
+    if movement_data.category:
+        category_db = await db.scalar(
+            select(Category)
+            .filter(Category.name == movement_data.category)
+            .filter(Category.user_id == current_user.id)
+        )
+        if not category_db:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Category does not exist or does not belong to the user",
+            )
+
+        movement_fields["category_id"] = category_db.id
 
     forbidden_fields = ["created_at", "id", "user_id"]
 

@@ -3,7 +3,8 @@ from fastapi import Depends, HTTPException, status
 from app.models.user import User
 import jwt
 from jwt.exceptions import InvalidTokenError
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer
 from app.core.rate_limit import limiter
@@ -31,7 +32,7 @@ async def get_db():
 
 
 async def get_current_user(
-    token: Annotated[str, Depends(OAuth2)], db: Session = Depends(get_db)
+    token: Annotated[str, Depends(OAuth2)], db: AsyncSession = Depends(get_db)
 ):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])  # type:ignore
@@ -43,7 +44,7 @@ async def get_current_user(
     except InvalidTokenError:
         raise credentials_exception
 
-    user = db.query(User).filter(User.id == id).first()
+    user = await db.scalar(select(User).filter(User.id == int(id)))
 
     if not user:
         raise credentials_exception

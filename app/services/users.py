@@ -5,7 +5,7 @@ from sqlalchemy import select
 
 
 async def get_users_v1(db: AsyncSession):
-    users = await db.scalars(select(User))
+    users = await db.scalars(select(User).filter(User.is_active))
 
     return [user for user in users]
 

@@ -17,6 +17,12 @@ async def monthly_report_v1(
     else:
         end_date = date(start_date.year, start_date.month + 1, 1)
 
+    if start_date > end_date:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Start date must be before end date",
+        )
+
     monthly_movements = await db.scalars(
         select(Category.type, func.sum(Movement.amount))
         .join(Movement, Movement.category_id == Category.id)
@@ -43,6 +49,12 @@ async def by_category_report_v1(
     end_month: date,
     db: AsyncSession,
 ):
+    if start_month > end_month:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Start month must be before end month",
+        )
+
     category_by_date = await db.scalars(
         select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)

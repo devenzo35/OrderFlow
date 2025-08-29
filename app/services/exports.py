@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
 from app.models import Category, Movement
-
+from fastapi import HTTPException, status
 from fastapi.responses import StreamingResponse
 from openpyxl import Workbook
 from io import StringIO, BytesIO
@@ -18,6 +18,12 @@ async def by_category_report_csv_v1(
     end_date: date,
     db: AsyncSession,
 ):
+    if start_date > end_date:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="start_date must be before or equal to end_date",
+        )
+
     category_by_date = await db.scalar(
         select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)
@@ -49,6 +55,12 @@ async def by_category_report_xslx_v1(
     end_date: date,
     db: AsyncSession,
 ):
+    if start_date > end_date:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="start_date must be before or equal to end_date",
+        )
+
     category_by_date = await db.scalar(
         select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)
@@ -85,6 +97,12 @@ async def by_category_report_pdf_v1(
     end_date: date,
     db: AsyncSession,
 ):
+    if start_date > end_date:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="start_date must be before or equal to end_date",
+        )
+
     category_by_date = await db.scalar(
         select(Category.name, func.sum(Movement.amount))
         .join(Category, Category.id == Movement.category_id)

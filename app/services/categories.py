@@ -41,7 +41,11 @@ async def create_category_v1(
     current_user: User,
 ):
     # Business rule: The category name must be unique per user.
-    exists = await db.scalar(select(Category).filter(Category.name == category.name))
+    exists = await db.scalar(
+        select(Category)
+        .filter(Category.user_id == current_user.id)
+        .filter(Category.name == category.name)
+    )
 
     if exists:
         raise HTTPException(
