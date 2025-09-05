@@ -42,7 +42,7 @@ async def login(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: AsyncSession = Depends(get_db),
 ):
-    return await user_login_v1(form_data, db)
+    return await user_login_v1(request, form_data, db)
 
 
 @router.get("/me", response_model=UserPublic)

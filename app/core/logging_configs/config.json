@@ -1,0 +1,66 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s-%(levelname)s: %(message)s"
+        },
+        "detailed": {
+            "format": "[%(levelname)s|%(module)s|L%(lineno)sd] %(asctime)s: %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S%z"
+        },
+        "json": {
+            "()": "app.core.logging_configs.mylogger.MyJSONFormatter",
+            "fmt_keys": {
+                "level": "levelname",
+                "message": "message",
+                "module": "module",
+                "line": "lineno",
+                "logger": "name",
+                "function": "funcName",
+                "thread_name": "threadName"
+            }
+        }
+    },
+    "handlers": {
+        "stderr": {
+            "class": "logging.StreamHandler",
+            "level": "WARNING",
+            "formatter": "json",
+            "stream": "ext://sys.stderr"
+        },
+        "file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": "DEBUG",
+            "formatter": "json",
+            "filename": "logs/orderflow_logs.jsonl",
+            "maxBytes": 50000,
+            "backupCount": 3
+        }
+    },
+    "loggers": {
+        "uvicorn": {
+            "handlers": [
+                "stderr",
+                "file"
+            ],
+            "level": "INFO",
+            "propagate": false
+        },
+        "general_logger": {
+            "level": "DEBUG",
+            "handlers": [
+                "stderr",
+                "file"
+            ],
+            "propagate": false
+        }
+    },
+    "root": {
+        "level": "DEBUG",
+        "handlers": [
+            "stderr",
+            "file"
+        ]
+    }
+}

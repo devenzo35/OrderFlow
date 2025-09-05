@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from sqlalchemy import select, func
 import math
+from app.core.app_logging import logger
 
 
 async def get_movements_v1(
@@ -122,16 +123,24 @@ async def create_movement_v1(
     )
 
     db.add(new_movement)
-    await db.commit()
-    await db.refresh(new_movement)
 
-    result = await db.scalar(
-        select(Movement)
-        .options(selectinload(Movement.category))
-        .filter(Movement.id == new_movement.id)
-    )
-
-    return result
+    try:
+        await db.commit()
+        await db.refresh(new_movement)
+        logger.info(
+            "User %s created movement: %s", new_movement.user_id, new_movement.id
+        )
+        result = await db.scalar(
+            select(Movement)
+            .options(selectinload(Movement.category))
+            .filter(Movement.id == new_movement.id)
+        )
+        return result
+    except Exception as e:
+        logger.error(
+            "Error creating movement",
+            extra={"user_id": new_movement.user_id, "error": str(e)},
+        )
 
 
 # TODO: Work in update movement and handle movement category update

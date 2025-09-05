@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from typing import Callable
 
 from app.schemas import UserCreate, TokenRefreshRequest
 from app.models import User
+from app.core.app_logging import logger
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
@@ -109,9 +110,11 @@ async def user_register_v1(user: UserCreate, db: AsyncSession):
 
 
 async def user_login_v1(
+    request: Request,
     form_data: OAuth2PasswordRequestForm,
     db: AsyncSession,
 ):
+    logger.info("Root endpoint accessed by %s", request.client.host)
     # Here we receive username and password from the user
     user_in_db = await db.scalar(
         select(User).filter(User.username == form_data.username)
