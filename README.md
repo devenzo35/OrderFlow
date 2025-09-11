@@ -41,8 +41,8 @@ To get the OrderFlow API running on your local machine, follow these steps:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
-    cd OrderFlow
+    git clone [repository_url](https://github.com/devenzo35/order_flow)
+    cd order_flow
     ```
 
 2.  **Set up environment variables:**
