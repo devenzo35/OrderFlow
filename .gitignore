@@ -53,7 +53,7 @@ exports/
 dist/
 build/
  
-GEMINI.md/
+GEMINI.md
 category_examples.json/
 user_examples.json/
 movements_examples.json/

@@ -6,8 +6,10 @@ client = TestClient(app)
 
 
 def test_get():
-
     response = client.get("/")
 
     assert response.status_code == 200
-    assert response.json() == {"greetings": "Hello world"}
+    assert response.json() == {
+        "Message": "Welcome to Order Flow API",
+        "Available versions": ["/api/v1"],
+    }

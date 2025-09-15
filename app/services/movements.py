@@ -7,12 +7,27 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy import select, func
 import math
 from app.core.app_logging import logger
+# import emails
 
 
 async def get_movements_v1(
     db: AsyncSession, current_user: User, page_size: int = 10, page: int = 1
 ) -> dict[str, list[Movement] | dict[str, int | str | None]]:
     offset = (page - 1) * page_size
+
+    # todo: message = emails.html(
+    #     subject="Tus movimientos financieros",
+    #     html=f"""
+    #         <h2>Hola {current_user.username}!</h2>
+    #         <p>Adjuntamos el resumen de tus movimientos financieros.</p>
+    #         <ul>
+    #             <li>Total movimientos: {await db.scalar(select(func.count(Movement.id)).filter(Movement.user_id == current_user.id))}</li>
+    #             <li>Página actual: {page}</li>
+    #             <li>Movimientos en esta página: {page_size}</li>
+    #         </ul>
+    #         <p>¡Gracias por usar nuestro sistema de reportes!</p>
+    #     """
+    # )
 
     total_movements = await db.scalar(
         select(func.count(Movement.id)).filter(Movement.user_id == current_user.id)

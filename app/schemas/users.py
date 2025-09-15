@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime
+from email_validator import validate_email, EmailNotValidError
 import re
 
 
@@ -36,14 +37,16 @@ class User(BaseModel):
         return value.lower()
 
     @field_validator("email")
-    def validate_email(cls, value: str) -> str:
-        if len(value) < 0:
-            raise ValueError("Email address is required")
+    def validate_email_field(cls, value: str) -> str:
+        try:
+            emailInfo = validate_email(value)
+        except EmailNotValidError as e:
+            raise ValueError(e)
+        if not emailInfo:
+            raise ValueError("Email is required")
         if len(value) > 30:
             raise ValueError("Email too long")
-        if not re.fullmatch(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,}$", value):
-            raise ValueError("Invalid email format")
-        return value.lower()
+        return emailInfo.normalized
 
 
 class UserCreate(User):

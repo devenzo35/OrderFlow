@@ -12,6 +12,8 @@ from contextlib import asynccontextmanager
 
 from app.core.app_logging import setup_logging
 
+# todo: Implement Sentry
+# todo: implement email stub
 
 origins = [
     "http://localhost:8000",

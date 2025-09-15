@@ -9,7 +9,7 @@ from app.services.categories import (
     update_category_v1,
 )
 from ...dependencies import get_db, get_current_user, default_limiter  # type: ignore
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 
 
@@ -25,7 +25,7 @@ router = APIRouter(
 async def get_categories(
     request: Request,
     current_user: Annotated[User, Depends(get_current_user)],
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
     return await get_categories_v1(current_user, db)
 
@@ -35,7 +35,7 @@ async def get_categories(
 async def get_category(
     request: Request,
     category_id: int,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     return await get_category_v1(
@@ -48,7 +48,7 @@ async def get_category(
 async def create_category(
     request: Request,
     category: CategoryCreate,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     return await create_category_v1(category, db, current_user)
@@ -60,7 +60,7 @@ async def update_category(
     request: Request,
     category: CategoryUpdate,
     category_id: int,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     return await update_category_v1(category, category_id, db, current_user)
@@ -71,7 +71,7 @@ async def update_category(
 async def delete_category(
     request: Request,
     category_id: int,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     return await delete_category_v1(category_id, db, current_user)

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+.git/
+*.log
+*.sqlite3
+logs/
+GEMINI.md
+movements_examples.json
+user_examples.json
+category_examples.json

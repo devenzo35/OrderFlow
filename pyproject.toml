@@ -10,6 +10,8 @@ dependencies = [
     "bcrypt>=4.3.0",
     "bleach>=6.2.0",
     "dotenv>=0.9.9",
+    "email-validator>=2.2.0",
+    "emails>=0.6",
     "fastapi[standard]>=0.116.1",
     "httpx>=0.28.1",
     "openpyxl>=3.1.5",
@@ -21,4 +23,5 @@ dependencies = [
     "ruff>=0.12.10",
     "slowapi>=0.1.9",
     "sqlalchemy>=2.0.43",
+    "trio>=0.31.0",
 ]
